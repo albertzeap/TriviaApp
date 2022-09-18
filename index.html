@@ -9,18 +9,31 @@
 <body>
     <main>
         <h1>Random Trivia</h1>
-        <div id="questions-container">
-            <h4 id="question-prompt"></h4>
+        <div class="questions-container">
+            <div class="question-header">
+                <h3 id="question">Question text</h3>
+                <ul>
+                    <li>
+                        <input type="radio" name="answer" class="answer" id="a">
+                        <label for="a" id="a_text">Answer</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" class="answer" id="b">
+                        <label for="b" id="b_text">Answer</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" class="answer" id="c">
+                        <label for="c" id="c_text">Answer</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" class="answer" id="d">
+                        <label for="d" id="d_text">Answer</label>
+                    </li>
+                </ul>
+            </div>
+            <button id="submit">Submit</button>
         </div>
-
-
-
-
-
     </main>
 </body>
 <script src="./triv.js"></script>
-
-
-
 </html>

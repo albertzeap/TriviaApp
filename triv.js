@@ -19,12 +19,21 @@ let fetchQuestion = async () => {
 
 }
 
-let question_container = document.getElementById("questions-container");
-let question_prompt = document.getElementById("question-prompt");
+
+let questionData;
+let index = 0;
+let score = 0;
+// let question_container = document.getElementById("questions-container");
+const question_prompt = document.getElementById("question");
+const allAns = document.querySelectorAll(".answer");
+const firstAns = document.getElementById("a_text");
+const secondAns = document.getElementById("b_text");
+const thirdAns = document.getElementById("c_text");
+const fourthAns = document.getElementById("d_text");
 
 
 // Traverses through the array of answers
-let createOptions = (incorrect, correct, ul) => {
+let createOptions = (incorrect, correct) => {
     let combinedAnswers = new Array();
 
     // Push all answers into a new array
@@ -34,34 +43,41 @@ let createOptions = (incorrect, correct, ul) => {
     combinedAnswers.push(correct);
     combinedAnswers.sort();
 
-    // Display unordered list of buttons for answers
-    combinedAnswers.forEach(option =>{
-        let optionLi = document.createElement("button");
-        optionLi.innerHTML = option;
-        ul.append(optionLi);
-    });
+    // Set the options to the available answers
+    firstAns.innerHTML = combinedAnswers[0];
+    secondAns.innerHTML = combinedAnswers[1];
+    thirdAns.innerHTML = combinedAnswers[2];
+    fourthAns.innerHTML = combinedAnswers[3];
+
 }
 
-let renderQuestions = () => {
+let saveQuestions = () => {
     fetchQuestion().then((questionObject) => {
-
-        // Traverses through each question array in the object
-        questionObject.forEach(question => {
-            let question_ = document.createElement("h4");
-            let options_list = document.createElement("ul");
-            question_.innerHTML = question.question;
-
-            createOptions(question.incorrectAnswers,question.correctAnswer, options_list);
-
-
-            // Append all the questions and answers into the questions container
-            question_container.append(question_);
-            question_container.append(options_list);
-            // console.log(question.question);
-        });
+        questionData = questionObject;
         console.log(questionObject);
+        console.log(questionData);
     });
 }
 
 
-renderQuestions();
+let deselectAnswers = () => {
+    allAns.forEach(allAns => allAns.checked = false);
+}
+
+
+let renderQuestion = (i) => {
+    // if (index == 9) index = 0;
+
+    // Deselect checked radio inputs
+    deselectAnswers();
+
+    i = index;
+    question_prompt.innerHTML = questionData[i].question;
+    createOptions(questionData[i].incorrectAnswers, questionData[i].correctAnswer);
+
+    index++;
+}
+
+
+saveQuestions();
+document.getElementById("submit").addEventListener("click", renderQuestion);
