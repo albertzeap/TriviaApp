@@ -60,9 +60,7 @@ let saveQuestions = () => {
         // Renders the first question when ready
         question_prompt.innerHTML = questionData[0].question;
         createOptions(questionData[0].incorrectAnswers, questionData[0].correctAnswer);
-
-        console.log(questionObject);
-        console.log(questionData);
+        score_container.innerHTML = `<p>QUESTION: ${index+1}/10</p>`;
     });
 }
 
@@ -99,7 +97,7 @@ let renderQuestion = () => {
     }
 
     // Update score on screen
-    score_container.innerHTML = `<p>${score}/10</p>`;
+    score_container.innerHTML = `<p>QUESTION: ${index+1}/10</p>`;
 
     // Increment index for next question
     index++;
