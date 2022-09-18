@@ -96,11 +96,11 @@ let renderQuestion = () => {
         console.log(score);
     }
 
-    // Update score on screen
-    score_container.innerHTML = `<p>QUESTION: ${index+1}/10</p>`;
-
     // Increment index for next question
     index++;
+
+    // Update score on screen
+    score_container.innerHTML = `<p>QUESTION: ${index+1}/10</p>`;
 
     if(index < 10){
         question_prompt.innerHTML = questionData[index].question;
