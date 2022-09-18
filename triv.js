@@ -23,7 +23,9 @@ let fetchQuestion = async () => {
 let questionData;
 let index = 0;
 let score = 0;
-// let question_container = document.getElementById("questions-container");
+const score_container = document.getElementById("score");
+const question_container = document.getElementById("questions-container");
+const question_header = document.getElementById("question-header");
 const question_prompt = document.getElementById("question");
 const allAns = document.querySelectorAll(".answer");
 const firstAns = document.getElementById("a_text");
@@ -54,30 +56,79 @@ let createOptions = (incorrect, correct) => {
 let saveQuestions = () => {
     fetchQuestion().then((questionObject) => {
         questionData = questionObject;
+
+        // Renders the first question when ready
+        question_prompt.innerHTML = questionData[0].question;
+        createOptions(questionData[0].incorrectAnswers, questionData[0].correctAnswer);
+
         console.log(questionObject);
         console.log(questionData);
     });
 }
 
-
+// Deselects all checked answers by setting them to false
 let deselectAnswers = () => {
     allAns.forEach(allAns => allAns.checked = false);
 }
 
+// Finds checked answer and returns label element's innerHTML
+let getAnswer = () => {
+    let selectedAnswer;
+    allAns.forEach(answer => {
+        
+        if(answer.checked){
+            selectedAnswer = answer.nextElementSibling.innerHTML
+        }
+    });
 
-let renderQuestion = (i) => {
-    // if (index == 9) index = 0;
-
-    // Deselect checked radio inputs
-    deselectAnswers();
-
-    i = index;
-    question_prompt.innerHTML = questionData[i].question;
-    createOptions(questionData[i].incorrectAnswers, questionData[i].correctAnswer);
-
-    index++;
+    return selectedAnswer;
 }
 
 
+let renderQuestion = () => {
+
+    // Retrieve first selected answer
+    const selectedAnswer = getAnswer();
+    console.log(`Selected: ${selectedAnswer}`);
+    console.log(`Correct: ${questionData[index].correctAnswer}`);
+
+    // Check to see if it is equal to the correct answer
+    if(selectedAnswer == questionData[index].correctAnswer){
+        score++;
+        console.log(score);
+    }
+
+    // Update score on screen
+    score_container.innerHTML = `<p>${score}/10</p>`;
+
+    // Increment index for next question
+    index++;
+
+    if(index < 10){
+        question_prompt.innerHTML = questionData[index].question;
+        createOptions(questionData[index].incorrectAnswers, questionData[index].correctAnswer);
+    }
+   
+
+    // Deselect all checked answers;
+    deselectAnswers();
+}
+
+// Saves the API object into local object
 saveQuestions();
-document.getElementById("submit").addEventListener("click", renderQuestion);
+
+document.getElementById("submit").addEventListener("click", () => {
+
+
+    if (index < 10){
+        renderQuestion();
+    }
+    else{
+        question_container.innerHTML = `
+        <h2>You scored ${score}/10</h2>
+
+        <button onclick="location.reload()">Reload</button>
+        `;
+    }
+    
+});
